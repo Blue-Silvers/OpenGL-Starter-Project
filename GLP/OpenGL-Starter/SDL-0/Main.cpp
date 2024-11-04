@@ -138,8 +138,12 @@ int main(int argc, char* argv[])
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourShift");
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
-
-
+		float speed = 5;
+		float timeValue = (float)SDL_GetTicks() / 1000;
+		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
+		glUseProgram(shaderProgram);
+		float mooving = (sin(timeValue * speed) / 2.0f) + 0.5f;
+		glUniform4f(vertexTriangleLocation, mooving, mooving, mooving, 1.0f);
 
 
 
