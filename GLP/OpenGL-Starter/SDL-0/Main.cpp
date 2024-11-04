@@ -1,8 +1,12 @@
 ﻿#include <iostream>
+#include <fstream>
+#include <string>
 #include <SDL.h>
 #include <glew.h>
 using namespace std;
 //#define GLEW_STATIC
+
+string LoadShader(string fileName);
 
 int main(int argc, char* argv[])
 {
@@ -37,7 +41,7 @@ int main(int argc, char* argv[])
 	glViewport(0, 0, width, height);
 
 	//Put the color you want here for the background
-	glClearColor(0.0f, 0.1f, 0.5f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 
 	float vertices[] = 
 	{
@@ -51,19 +55,11 @@ int main(int argc, char* argv[])
 	glGenBuffers(1, &vbo);
 
 	//SHADER
-	const char* vertexShaderSource = "#version 330 core\n"
-		"in vec3 pos;\n"
-		"void main()\n"
-		"{\n"
-		"   gl_Position = vec4(pos, 1.0);\n"
-		"}\0";
+	string vertexShader = LoadShader("SimpleShader.shader");
+	const char* vertexShaderSource = vertexShader.c_str();
 
-	const char* fragmentShaderSource = "#version 330 core\n"
-		"out vec4 FragColor;\n"
-		"void main()\n"
-		"{\n"
-		"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-		"}\n\0";
+	string vertexFragment = LoadShader("BlinkFragment.shader");
+	const char* fragmentShaderSource = vertexFragment.c_str();
 
 	unsigned int vertexShaderId;
 	vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -117,6 +113,16 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
 		//drawing zone
+		float speed = 5;
+		float timeValue = (float)SDL_GetTicks() / 1000;
+		float redColor = (sin(timeValue *speed) / 2.0f) + 0.5f;
+		float greenColor = (sin(timeValue* speed +2) / 2.0f) + 0.5f;
+		float blueColor = (sin(timeValue* speed +4) / 2.0f) + 0.5f;
+
+		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourShift");
+		glUseProgram(shaderProgram);
+		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);
+
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -130,4 +136,22 @@ int main(int argc, char* argv[])
 	}
 	
 	return 0;
+
+
 }
+
+string LoadShader(string fileName) {
+		ifstream myFile;
+		myFile.open(fileName);
+		if (myFile.fail()) {
+			cerr << "Error - failed to open " << fileName << endl;
+		}
+		string fileText = "";
+		string line = "";
+		while (getline(myFile, line)) {
+			fileText += line + '\n';
+		}
+
+		myFile.close();
+		return fileText;
+	}
