@@ -43,12 +43,19 @@ int main(int argc, char* argv[])
 	//Put the color you want here for the background
 	glClearColor(0.0f, 0.0f, 0.1f, 1.0f);
 
-	float vertices[] = 
+	/*float vertices[] =
 	{
 		-0.5f, -0.5f, 0.0f, //A
 		0.5f, -0.5f, 0.0f,  //B
 		0.0f,  0.5f, 0.0f   //C
+	};*/
+	float vertices[] = {
+		// positions             // colors
+			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
 	};
+
 
 	//VBO
 	unsigned int vbo;
@@ -58,7 +65,8 @@ int main(int argc, char* argv[])
 	string vertexShader = LoadShader("SimpleShader.shader");
 	const char* vertexShaderSource = vertexShader.c_str();
 
-	string vertexFragment = LoadShader("BlinkFragment.shader");
+	//string vertexFragment = LoadShader("BlinkFragment.shader");
+	string vertexFragment = LoadShader("SimpleFragment.shader");
 	const char* fragmentShaderSource = vertexFragment.c_str();
 
 	unsigned int vertexShaderId;
@@ -86,8 +94,15 @@ int main(int argc, char* argv[])
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	//glEnableVertexAttribArray(0);
+	
+	// Position attribute
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+	// Color attribute
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 
 	glEnable(GL_DEPTH_TEST);
@@ -113,7 +128,8 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
 		//drawing zone
-		float speed = 5;
+
+		/*float speed = 5;
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		float redColor = (sin(timeValue *speed) / 2.0f) + 0.5f;
 		float greenColor = (sin(timeValue* speed +2) / 2.0f) + 0.5f;
@@ -121,7 +137,10 @@ int main(int argc, char* argv[])
 
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourShift");
 		glUseProgram(shaderProgram);
-		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);
+		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
+
+
+
 
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
