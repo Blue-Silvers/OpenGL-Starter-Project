@@ -16,10 +16,10 @@ int main(int argc, char* argv[])
 	}
 	///////////SETTING UP SDL/////////////
 	//Create a simple window
-	int width = 400;
-	int height = 300;
+	int width = 1200;
+	int height = 800;
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
-	SDL_Window* Window = SDL_CreateWindow("My window", center, center, width, height, SDL_WINDOW_OPENGL);
+	SDL_Window* Window = SDL_CreateWindow("OpenGL project", center, center, width, height, SDL_WINDOW_OPENGL);
 	//SDL_WINDOW_OPENGL is a u32 flag !
 
 
@@ -33,6 +33,101 @@ int main(int argc, char* argv[])
 		cout << "Glew initialized successfully\n";
 	}
 
-	cin.get();
+	//Set the viewing frame through which we will see the objects
+	glViewport(0, 0, width, height);
+
+	//Put the color you want here for the background
+	glClearColor(0.0f, 0.1f, 0.5f, 1.0f);
+
+	float vertices[] = 
+	{
+		-0.5f, -0.5f, 0.0f, //A
+		0.5f, -0.5f, 0.0f,  //B
+		0.0f,  0.5f, 0.0f   //C
+	};
+
+	//VBO
+	unsigned int vbo;
+	glGenBuffers(1, &vbo);
+
+	//SHADER
+	const char* vertexShaderSource = "#version 330 core\n"
+		"in vec3 pos;\n"
+		"void main()\n"
+		"{\n"
+		"   gl_Position = vec4(pos, 1.0);\n"
+		"}\0";
+
+	const char* fragmentShaderSource = "#version 330 core\n"
+		"out vec4 FragColor;\n"
+		"void main()\n"
+		"{\n"
+		"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+		"}\n\0";
+
+	unsigned int vertexShaderId;
+	vertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShaderId, 1, &vertexShaderSource, NULL);
+	glCompileShader(vertexShaderId);
+
+	unsigned int fragmentShaderId;
+	fragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShaderId, 1, &fragmentShaderSource, NULL);
+	glCompileShader(fragmentShaderId);
+
+	unsigned int shaderProgram;
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, vertexShaderId); //Attach vertex
+	glAttachShader(shaderProgram, fragmentShaderId); //Attach fragment
+	glLinkProgram(shaderProgram); //Link shader to program
+	glUseProgram(shaderProgram);  //Use shader to program
+
+	//VAO
+	unsigned int vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+
+
+	//MAIN SGAME LOOP
+	bool isRunning = true;
+
+	while (isRunning)
+	{
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {
+			switch (event.type) {
+			case SDL_QUIT:
+				isRunning = false;
+				break;
+			default:
+				break;
+			}
+		}
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+
+		//drawing zone
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+
+		SDL_GL_SwapWindow(Window); // Swapbuffer
+	}
+
+	if (isRunning) 
+	{
+		cin.get();
+	}
+	
 	return 0;
 }
