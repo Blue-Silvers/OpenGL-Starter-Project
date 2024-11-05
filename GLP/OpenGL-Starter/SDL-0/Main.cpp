@@ -51,55 +51,28 @@ int main(int argc, char* argv[])
 	};*/
 	float vertices[] = {
 		// positions             // colors
-			/* //0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 -0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,		//First test
-			-0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.0f,  -0.8f, 0.0f,  0.0f, 0.0f, 1.0f,//
-			 -0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,*/
-
-			/*0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 -0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			-0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.0f,  -0.8f, 0.0f,  0.0f, 0.0f, 1.0f,
-														//GL_TRIANGLE_FAN
-			 -0.2f, 0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 -0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 -0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			0.2f, 0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.0f,  0.8f, 0.0f,  0.0f, 0.0f, 1.0f*/
-
 			
-			 0.8f,  0.0f, 0.0f,  0.2f, 0.0f, 0.8f,
-			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 -0.2f, 0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 0.0f,  0.8f, 0.0f,  0.0f, 1.0f, 0.0f,
-														//GL_TRIANGLE_STRIP
-			 -0.8f,  0.0f, 0.0f,  0.8f, 0.0f, 0.2f,
-			- 0.2f, 0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 -0.2f, -0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
-			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 0.0f,  -0.8f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.1f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.1f,  0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.1f,  0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.3f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.3f,  -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.1f,  -0.4f, 0.0f,  1.0f, 0.0f, 0.0f,//
+			 0.1f,  -0.4f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.3f,  -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.3f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
 
+			 0.18f,  0.38f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.18f,  0.46f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.1f,  0.46f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.02f,  0.38f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.02f,  0.3f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.1f,  0.3f, 0.0f,  0.1f, 0.6f, 0.3f,
 
-
-			 0.0f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
-			 0.3f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
-			 0.1f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
-			 -0.3f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
-			0.0f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
-			 -0.0f,  -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
-													//GL_TRIANGLE_FAN
-			0.0f, -0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
-			-0.1f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
-			0.1f, -0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
-			0.0f, 0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
+			 -0.02f,  0.4f, 0.0f,  0.4f, 0.3f, 0.3f,
+			 0.02f,  0.4f, 0.0f,  0.4f, 0.3f, 0.3f,
+			 0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
+			 -0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
 	};
 
 
@@ -158,8 +131,6 @@ int main(int argc, char* argv[])
 	//MAIN SGAME LOOP
 	bool isRunning = true;
 
-	float bounes = 0;
-bool isBounes = false;
 
 	while (isRunning)
 	{
@@ -198,42 +169,19 @@ bool isBounes = false;
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		float mooving = (sin(timeValue * speed));
 		//float Scaling = (sin(timeValue * speed) / 2.0f)+0.5f;
-		float Scaling = 0.5;
-		//
-		//
-		if (bounes >= 0.5) 
-		{
-			isBounes = true;
-		}
-		else if (bounes <= -0.5)
-		{
-			isBounes = false;
-		}
-		if (isBounes) {
-			bounes -= 0.01f;
-		}
-		else if (isBounes==false)
-		{
-			bounes += 0.01f;
-		}
+		float Scaling = 0.4;
 
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
-		int vertexTriangleMoveTest = glGetUniformLocation(shaderProgram, "speedTest");//
 		glUseProgram(shaderProgram);
-		glUniform1f(vertexTriangleLocation, mooving);
+		//glUniform2f(vertexTriangleLocation, mooving, mooving);
 		glUniform1f(vertexTriangleScale, Scaling);
-		glUniform1f(vertexTriangleMoveTest, bounes);//
 
 
 
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-		//glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
-		//glDrawArrays(GL_TRIANGLE_FAN, 6, 6);
-		glDrawArrays(GL_TRIANGLE_FAN, 10, 10);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
-		glDrawArrays(GL_TRIANGLE_STRIP, 5, 5);
-		
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
+		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
+		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
 
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
