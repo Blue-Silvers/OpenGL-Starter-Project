@@ -72,6 +72,13 @@ int main(int argc, char* argv[])
 			 0.02f,  0.4f, 0.0f,  0.4f, 0.3f, 0.3f,
 			 0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
 			 -0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
+
+			 0.18f,  0.08f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.18f,  0.16f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.1f,  0.16f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.02f,  0.08f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.02f,  0.0f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.1f,  0.0f, 0.0f,  0.1f, 0.6f, 0.3f,
 	};
 
 
@@ -129,8 +136,12 @@ int main(int argc, char* argv[])
 	bool isRunning = true;
 	float rightLeft = 0;
 	float upDown = -0.1;
-	float moovingX = 0;
-	float moovingY = 0;
+	//float moovingX = 0;
+	//float moovingY = 0;
+	float moovingX[100] = { 0, 0, 0, 0, 0, 0, 0 };
+	float moovingY[100] = { 0, 0, 0, 0, 0, 0, 0 };
+	int length = 50;
+	float speed = 0.2f;
 
 	while (isRunning)
 	{
@@ -145,22 +156,22 @@ int main(int argc, char* argv[])
 				{
 					isRunning = false;
 				}
-				if (event.key.keysym.sym == SDLK_UP)
+				if (event.key.keysym.sym == SDLK_UP && upDown == 0)
 				{
 					upDown = 0.1;
 					rightLeft = 0;
 				}
-				else if (event.key.keysym.sym == SDLK_DOWN) 
+				else if (event.key.keysym.sym == SDLK_DOWN && upDown == 0)
 				{
 					upDown = -0.1;
 					rightLeft = 0;
 				}
-				else if (event.key.keysym.sym == SDLK_RIGHT)
+				else if (event.key.keysym.sym == SDLK_RIGHT && rightLeft == 0)
 				{
 					upDown = 0;
 					rightLeft = 0.1;
 				}
-				else if (event.key.keysym.sym == SDLK_LEFT)
+				else if (event.key.keysym.sym == SDLK_LEFT && rightLeft == 0)
 				{
 					upDown = 0;
 					rightLeft = -0.1;
@@ -186,24 +197,10 @@ int main(int argc, char* argv[])
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
 
-		float speed = 0.2f;
+		
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		//float mooving = (sin(timeValue * speed));
 		float Scaling = 0.4;
-
-
-
-		if (moovingX <= -2.2|| moovingX >= 2.2 /* || moovingY <= -2.2 || moovingY >= 2.2*/)
-		{
-			rightLeft = 0;
-		}
-		if (moovingY <= -2.1 || moovingY >= 2)
-		{
-			upDown = 0;
-		}
-
-		moovingX += rightLeft * speed;
-		moovingY += upDown * speed;
 
 
 
@@ -211,28 +208,19 @@ int main(int argc, char* argv[])
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
 		glUseProgram(shaderProgram);
 
-		if (moovingX <= -0.5 || moovingX >= 0.5)
-		{
-		
-		glUniform2f(vertexTriangleLocation, moovingX, moovingY);
-		glUniform1f(vertexTriangleScale, Scaling);
 
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
-		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
-		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
-		}//
 
-		if (moovingX <= -2.2 || moovingX >= 2.2)
+		if (moovingX[0] <= -2 || moovingX[0] >= 2)
 		{
 			rightLeft = 0;
 		}
-		if (moovingY <= -2.1 || moovingY >= 2)
+		if (moovingY[0] <= -2 || moovingY[0] >= 2)
 		{
 			upDown = 0;
 		}
 
-		moovingX += rightLeft * speed;
-		moovingY += upDown * speed;
+		moovingX[0] += rightLeft * speed;
+		moovingY[0] += upDown * speed;
 
 
 		//apple
@@ -244,13 +232,30 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
 
 
-		//Snake apple
-		glUniform2f(vertexTriangleLocation, moovingX, moovingY);
+
+		//Snake head
+		glUniform2f(vertexTriangleLocation, moovingX[0], moovingY[0]);
 		glUniform1f(vertexTriangleScale, Scaling);
 
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
-		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
-		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
+		glDrawArrays(GL_TRIANGLE_FAN, 19, 6);
+
+		//Snake body
+		for (int i = length - 1; i > 0; i--)
+		{
+			moovingX[i] = moovingX[i - 1];
+			moovingY[i] = moovingY[i - 1];
+			glUniform2f(vertexTriangleLocation, moovingX[i], moovingY[i]);
+			glUniform1f(vertexTriangleScale, Scaling);
+
+			glDrawArrays(GL_TRIANGLE_FAN, 19, 6);
+		}
+
+
+		// When eat apple
+		/*
+		length += 5;
+		speed += 0.02;
+		*/
 
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
