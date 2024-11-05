@@ -111,6 +111,22 @@ int main(int argc, char* argv[])
 	glLinkProgram(shaderProgram); //Link shader to program
 	glUseProgram(shaderProgram);  //Use shader to program
 
+
+	string vertexFragmentRGB = LoadShader("BlinkFragment.shader");
+	const char* fragmentRgbShaderSource = vertexFragmentRGB.c_str();
+
+	unsigned int fragmentRgbShaderId;
+	fragmentRgbShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentRgbShaderId, 1, &fragmentRgbShaderSource, NULL);
+	glCompileShader(fragmentRgbShaderId);
+
+	unsigned int shaderProgramRGB;
+	shaderProgramRGB = glCreateProgram();
+	glAttachShader(shaderProgramRGB, vertexShaderId); //Attach vertex
+	glAttachShader(shaderProgramRGB, fragmentRgbShaderId); //Attach fragment
+	glLinkProgram(shaderProgramRGB); //Link shader to program
+
+
 	//VAO
 	unsigned int vao;
 	glGenVertexArrays(1, &vao);
@@ -176,6 +192,14 @@ int main(int argc, char* argv[])
 					upDown = 0;
 					rightLeft = -0.1;
 				}
+				else if (event.key.keysym.sym == SDLK_SPACE)
+				{
+					if (length + 5 <= 100) 
+					{
+						length += 5;
+					}
+					speed += 0.03;
+				}
 				break;
 
 			default:
@@ -200,7 +224,7 @@ int main(int argc, char* argv[])
 		
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		//float mooving = (sin(timeValue * speed));
-		float Scaling = 0.4;
+		float Scaling = 0.2;
 
 
 
@@ -209,16 +233,18 @@ int main(int argc, char* argv[])
 		glUseProgram(shaderProgram);
 
 
-
-		if (moovingX[0] <= -2 || moovingX[0] >= 2)
+		//border
+		if (moovingX[0] <= -1.5 || moovingX[0] >= 1.5)
 		{
 			rightLeft = 0;
 		}
-		if (moovingY[0] <= -2 || moovingY[0] >= 2)
+		if (moovingY[0] <= -1.5 || moovingY[0] >= 1.5)
 		{
 			upDown = 0;
 		}
 
+
+		//mmovement
 		moovingX[0] += rightLeft * speed;
 		moovingY[0] += upDown * speed;
 
@@ -232,6 +258,16 @@ int main(int argc, char* argv[])
 		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
 
 
+		float redColor = (sin(timeValue * speed) / 2.0f) + 0.5f;
+		float greenColor = (sin(timeValue * speed + 2) / 2.0f) + 0.5f;
+		float blueColor = (sin(timeValue * speed + 4) / 2.0f) + 0.5f;
+
+		vertexTriangleLocation = glGetUniformLocation(shaderProgramRGB, "ourMovement");
+		vertexTriangleScale = glGetUniformLocation(shaderProgramRGB, "ourScale");
+		int vertexColorLocation = glGetUniformLocation(shaderProgramRGB, "ourShift");
+		glUseProgram(shaderProgramRGB);
+		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);
+		Scaling = 0.6;
 
 		//Snake head
 		glUniform2f(vertexTriangleLocation, moovingX[0], moovingY[0]);
