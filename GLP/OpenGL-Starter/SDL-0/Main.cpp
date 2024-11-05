@@ -189,19 +189,37 @@ int main(int argc, char* argv[])
 		float speed = 0.2f;
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		//float mooving = (sin(timeValue * speed));
-		//float Scaling = (sin(timeValue * speed) / 2.0f)+0.5f;
 		float Scaling = 0.4;
+
+		if (moovingX <= -2.2|| moovingX >= 2.2 /* || moovingY <= -2.2 || moovingY >= 2.2*/)
+		{
+			rightLeft = 0;
+		}
+		if (moovingY <= -2.1 || moovingY >= 2)
+		{
+			upDown = 0;
+		}
+
 		moovingX += rightLeft * speed;
 		moovingY += upDown * speed;
+
 
 
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
 		glUseProgram(shaderProgram);
-		glUniform2f(vertexTriangleLocation, moovingX, moovingY);
+		glUniform2f(vertexTriangleLocation, 0, 0);
 		glUniform1f(vertexTriangleScale, Scaling);
 
+		//apple
+		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
+		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
+		glDrawArrays(GL_TRIANGLE_FAN, 15, 4);
 
+
+		//Snake apple
+		glUniform2f(vertexTriangleLocation, moovingX, moovingY);
+		glUniform1f(vertexTriangleScale, Scaling);
 
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
 		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
