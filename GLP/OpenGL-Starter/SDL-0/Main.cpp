@@ -73,12 +73,12 @@ int main(int argc, char* argv[])
 			 0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
 			 -0.02f,  0.2f, 0.0f,  0.4f, 0.3f, 0.3f,
 
-			 0.18f,  0.08f, 0.0f,  0.1f, 0.6f, 0.3f,
-			 0.18f,  0.16f, 0.0f,  0.1f, 0.6f, 0.3f,
-			 0.1f,  0.16f, 0.0f,  0.1f, 0.6f, 0.3f,
-			 0.02f,  0.08f, 0.0f,  0.1f, 0.6f, 0.3f,
-			 0.02f,  0.0f, 0.0f,  0.1f, 0.6f, 0.3f,
 			 0.1f,  0.0f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.1f,  0.1f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.0f,  0.1f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 -0.1f,  0.0f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 -0.1f,  -0.1f, 0.0f,  0.1f, 0.6f, 0.3f,
+			 0.0f,  -0.1f, 0.0f,  0.1f, 0.6f, 0.3f,
 	};
 
 
@@ -211,22 +211,10 @@ int main(int argc, char* argv[])
 
 		//drawing zone
 
-		/*float speed = 5;
-		float timeValue = (float)SDL_GetTicks() / 1000;
-		float redColor = (sin(timeValue *speed) / 2.0f) + 0.5f;
-		float greenColor = (sin(timeValue* speed +2) / 2.0f) + 0.5f;
-		float blueColor = (sin(timeValue* speed +4) / 2.0f) + 0.5f;
-
-		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourShift");
-		glUseProgram(shaderProgram);
-		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
-
-		
+		//Classic draw
 		float timeValue = (float)SDL_GetTicks() / 1000;
 		//float mooving = (sin(timeValue * speed));
 		float Scaling = 0.2;
-
-
 
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
@@ -244,11 +232,6 @@ int main(int argc, char* argv[])
 		}
 
 
-		//mmovement
-		moovingX[0] += rightLeft * speed;
-		moovingY[0] += upDown * speed;
-
-
 		//apple
 		glUniform2f(vertexTriangleLocation, 0, 0);
 		glUniform1f(vertexTriangleScale, Scaling);
@@ -262,6 +245,14 @@ int main(int argc, char* argv[])
 		float greenColor = (sin(timeValue * speed + 2) / 2.0f) + 0.5f;
 		float blueColor = (sin(timeValue * speed + 4) / 2.0f) + 0.5f;
 
+
+		//movement
+		moovingX[0] += rightLeft * speed;
+		moovingY[0] += upDown * speed;
+
+		//check body collision
+
+		//RGB draw
 		vertexTriangleLocation = glGetUniformLocation(shaderProgramRGB, "ourMovement");
 		vertexTriangleScale = glGetUniformLocation(shaderProgramRGB, "ourScale");
 		int vertexColorLocation = glGetUniformLocation(shaderProgramRGB, "ourShift");
