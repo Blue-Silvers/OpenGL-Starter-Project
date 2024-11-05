@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	}
 	///////////SETTING UP SDL/////////////
 	//Create a simple window
-	int width = 1200;
+	int width = 800;
 	int height = 800;
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
 	SDL_Window* Window = SDL_CreateWindow("OpenGL project", center, center, width, height, SDL_WINDOW_OPENGL);
@@ -51,9 +51,55 @@ int main(int argc, char* argv[])
 	};*/
 	float vertices[] = {
 		// positions             // colors
-			 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-			-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-			 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+			/* //0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,		//First test
+			-0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.0f,  -0.8f, 0.0f,  0.0f, 0.0f, 1.0f,//
+			 -0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,*/
+
+			/*0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			-0.2f, -0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.0f,  -0.8f, 0.0f,  0.0f, 0.0f, 1.0f,
+														//GL_TRIANGLE_FAN
+			 -0.2f, 0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 -0.8f,  0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 -0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			0.2f, 0.2f, 0.0f,  0.0f, 1.0f, 0.0f,
+			 0.0f,  0.8f, 0.0f,  0.0f, 0.0f, 1.0f*/
+
+			
+			 0.8f,  0.0f, 0.0f,  0.2f, 0.0f, 0.8f,
+			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.2f, 0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 -0.2f, 0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 0.0f,  0.8f, 0.0f,  0.0f, 1.0f, 0.0f,
+														//GL_TRIANGLE_STRIP
+			 -0.8f,  0.0f, 0.0f,  0.8f, 0.0f, 0.2f,
+			- 0.2f, 0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 -0.2f, -0.2f, 0.0f,  0.0f, 0.0f, 1.0f,
+			 0.2f, -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
+			 0.0f,  -0.8f, 0.0f,  0.0f, 1.0f, 0.0f,
+
+
+
+			 0.0f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
+			 0.3f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
+			 0.1f, 0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
+			 -0.3f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
+			0.0f, -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
+			 -0.0f,  -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
+													//GL_TRIANGLE_FAN
+			0.0f, -0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
+			0.1f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
+			-0.1f, -0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
+			0.0f, 0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
 	};
 
 
@@ -138,17 +184,32 @@ int main(int argc, char* argv[])
 		int vertexColorLocation = glGetUniformLocation(shaderProgram, "ourShift");
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
-		float speed = 5;
+
+		float speed = 2;
 		float timeValue = (float)SDL_GetTicks() / 1000;
+		float mooving = (sin(timeValue * speed));
+		//float Scaling = (sin(timeValue * speed) / 2.0f)+0.5f;
+		float Scaling = 0.5;
+		bool isBounes = false;//
+		float bounes = (sin(timeValue * speed));//
+
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
+		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
+		int vertexTriangleMoveTest = glGetUniformLocation(shaderProgram, "speedTest");//
 		glUseProgram(shaderProgram);
-		float mooving = (sin(timeValue * speed) / 2.0f) + 0.5f;
-		glUniform4f(vertexTriangleLocation, mooving, mooving, mooving, 1.0f);
+		glUniform1f(vertexTriangleLocation, mooving);
+		glUniform1f(vertexTriangleScale, Scaling);
+		glUniform1f(vertexTriangleMoveTest, bounes);//
 
 
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLE_FAN, 0, 6);
+		//glDrawArrays(GL_TRIANGLE_FAN, 6, 6);
+		glDrawArrays(GL_TRIANGLE_FAN, 10, 10);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 5);
+		glDrawArrays(GL_TRIANGLE_STRIP, 5, 5);
+		
 
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
