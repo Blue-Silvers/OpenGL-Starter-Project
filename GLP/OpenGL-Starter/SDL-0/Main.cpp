@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	int width = 800;
 	int height = 800;
 	unsigned int center = SDL_WINDOWPOS_CENTERED;
-	SDL_Window* Window = SDL_CreateWindow("OpenGL project", center, center, width, height, SDL_WINDOW_OPENGL);
+	SDL_Window* Window = SDL_CreateWindow("Snake", center, center, width, height, SDL_WINDOW_OPENGL);
 	//SDL_WINDOW_OPENGL is a u32 flag !
 
 
@@ -51,13 +51,12 @@ int main(int argc, char* argv[])
 	};*/
 	float vertices[] = {
 		// positions             // colors
-			
 			 0.1f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 0.1f,  0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 -0.1f,  0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 -0.3f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 -0.3f,  -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
-			 -0.1f,  -0.4f, 0.0f,  1.0f, 0.0f, 0.0f,//
+			 -0.1f,  -0.4f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 0.1f,  -0.4f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 0.3f,  -0.2f, 0.0f,  1.0f, 0.0f, 0.0f,
 			 0.3f,  0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
@@ -113,8 +112,6 @@ int main(int argc, char* argv[])
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
 	
 	// Position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
@@ -130,7 +127,10 @@ int main(int argc, char* argv[])
 
 	//MAIN SGAME LOOP
 	bool isRunning = true;
-
+	float rightLeft = 0;
+	float upDown = -0.1;
+	float moovingX = 0;
+	float moovingY = 0;
 
 	while (isRunning)
 	{
@@ -145,7 +145,28 @@ int main(int argc, char* argv[])
 				{
 					isRunning = false;
 				}
+				if (event.key.keysym.sym == SDLK_UP)
+				{
+					upDown = 0.1;
+					rightLeft = 0;
+				}
+				else if (event.key.keysym.sym == SDLK_DOWN) 
+				{
+					upDown = -0.1;
+					rightLeft = 0;
+				}
+				else if (event.key.keysym.sym == SDLK_RIGHT)
+				{
+					upDown = 0;
+					rightLeft = 0.1;
+				}
+				else if (event.key.keysym.sym == SDLK_LEFT)
+				{
+					upDown = 0;
+					rightLeft = -0.1;
+				}
 				break;
+
 			default:
 				break;
 			}
@@ -165,16 +186,19 @@ int main(int argc, char* argv[])
 		glUseProgram(shaderProgram);
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);*/
 
-		float speed = 2;
+		float speed = 0.2f;
 		float timeValue = (float)SDL_GetTicks() / 1000;
-		float mooving = (sin(timeValue * speed));
+		//float mooving = (sin(timeValue * speed));
 		//float Scaling = (sin(timeValue * speed) / 2.0f)+0.5f;
 		float Scaling = 0.4;
+		moovingX += rightLeft * speed;
+		moovingY += upDown * speed;
+
 
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
 		glUseProgram(shaderProgram);
-		//glUniform2f(vertexTriangleLocation, mooving, mooving);
+		glUniform2f(vertexTriangleLocation, moovingX, moovingY);
 		glUniform1f(vertexTriangleScale, Scaling);
 
 
