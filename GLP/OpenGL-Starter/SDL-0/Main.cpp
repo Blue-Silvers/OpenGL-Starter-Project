@@ -97,8 +97,8 @@ int main(int argc, char* argv[])
 			 -0.0f,  -0.1f, 0.0f,  1.0f, 1.0f, 1.0f,
 													//GL_TRIANGLE_FAN
 			0.0f, -0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
-			0.1f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
-			-0.1f, -0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
+			-0.1f,  0.0f, 0.0f,  1.0f, 1.0f, 1.0f,//
+			0.1f, -0.0f, 0.0f,  1.0f, 1.0f, 1.0f,
 			0.0f, 0.3f, 0.0f,  1.0f, 1.0f, 1.0f,
 	};
 
@@ -158,6 +158,9 @@ int main(int argc, char* argv[])
 	//MAIN SGAME LOOP
 	bool isRunning = true;
 
+	float bounes = 0;
+bool isBounes = false;
+
 	while (isRunning)
 	{
 		SDL_Event event;
@@ -165,6 +168,12 @@ int main(int argc, char* argv[])
 			switch (event.type) {
 			case SDL_QUIT:
 				isRunning = false;
+				break;
+			case SDL_KEYDOWN:
+				if (event.key.keysym.sym == SDLK_ESCAPE) 
+				{
+					isRunning = false;
+				}
 				break;
 			default:
 				break;
@@ -190,8 +199,23 @@ int main(int argc, char* argv[])
 		float mooving = (sin(timeValue * speed));
 		//float Scaling = (sin(timeValue * speed) / 2.0f)+0.5f;
 		float Scaling = 0.5;
-		bool isBounes = false;//
-		float bounes = (sin(timeValue * speed));//
+		//
+		//
+		if (bounes >= 0.5) 
+		{
+			isBounes = true;
+		}
+		else if (bounes <= -0.5)
+		{
+			isBounes = false;
+		}
+		if (isBounes) {
+			bounes -= 0.01f;
+		}
+		else if (isBounes==false)
+		{
+			bounes += 0.01f;
+		}
 
 		int vertexTriangleLocation = glGetUniformLocation(shaderProgram, "ourMovement");
 		int vertexTriangleScale = glGetUniformLocation(shaderProgram, "ourScale");
