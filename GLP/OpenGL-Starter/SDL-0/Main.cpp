@@ -159,6 +159,8 @@ int main(int argc, char* argv[])
 	int length = 50;
 	float speed = 0.2f;
 
+	float randomPosX = 0;
+	float randomPosY = 0;
 	while (isRunning)
 	{
 		SDL_Event event;
@@ -194,6 +196,8 @@ int main(int argc, char* argv[])
 				}
 				else if (event.key.keysym.sym == SDLK_SPACE)
 				{
+					randomPosX = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
+					randomPosY = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
 					if (length + 5 <= 100) 
 					{
 						length += 5;
@@ -233,8 +237,9 @@ int main(int argc, char* argv[])
 
 
 		//apple
-		glUniform2f(vertexTriangleLocation, 0, 0);
+		glUniform2f(vertexTriangleLocation, randomPosX, randomPosY);
 		glUniform1f(vertexTriangleScale, Scaling);
+
 
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 9);
 		glDrawArrays(GL_TRIANGLE_FAN, 9, 6);
@@ -260,6 +265,8 @@ int main(int argc, char* argv[])
 		glUniform4f(vertexColorLocation, redColor, greenColor, blueColor, 1.0f);
 		Scaling = 0.6;
 
+
+
 		//Snake head
 		glUniform2f(vertexTriangleLocation, moovingX[0], moovingY[0]);
 		glUniform1f(vertexTriangleScale, Scaling);
@@ -276,13 +283,30 @@ int main(int argc, char* argv[])
 
 			glDrawArrays(GL_TRIANGLE_FAN, 19, 6);
 		}
+		//((-1 + moovingX[0])* Scaling)
+		//((-3 + randomPosX)* 0.2)
 
-
+		
 		// When eat apple
 		/*
-		length += 5;
-		speed += 0.02;
+		randomPosX = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
+					randomPosY = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
+					if (length + 5 <= 100) 
+					{
+						length += 5;
+					}
+					speed += 0.03;
 		*/
+		if (((-0.1 + moovingX[0]) * 0.6) > ((-0.3 + randomPosX) * 0.2) && ((-0.1 + moovingX[0]) * 0.6) < ((0.3 + randomPosX) * 0.2) && ((-0.1 + moovingY[0]) * 0.6) < ((0.3 + randomPosY) * 0.2) && ((0.1 + moovingY[0]) * 0.6) > ((-0.3 + randomPosY) * 0.2))
+		{
+			randomPosX = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
+			randomPosY = (2.0 * 4.5 * float(rand()) / float(RAND_MAX)) - 1.0 * 4.5;
+			if (length + 5 <= 100)
+			{
+				length += 5;
+			}
+			speed += 0.03;
+		}
 
 		SDL_GL_SwapWindow(Window); // Swapbuffer
 	}
